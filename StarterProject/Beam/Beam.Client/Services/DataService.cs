@@ -35,6 +35,7 @@ namespace Beam.Client.Services
 
         public DataService(HttpClient httpInstance)
         {
+            //throw new Exception("Oops");
             http = httpInstance;
             if (CurrentUser == null) CurrentUser = new User() { Name = "Anon" + new Random().Next(0, 10) };
         }
@@ -97,6 +98,11 @@ namespace Beam.Client.Services
             if (CurrentUser.Id == 0) await GetOrCreateUser();
             Rays = await http.GetJsonAsync<List<Ray>>($"/api/Prism/Remove/{CurrentUser.Id}/{RayId}");
             UpdatedRays?.Invoke();
+        }
+
+        public async Task<List<Ray>> GetMyRays()
+        {
+            return await http.GetJsonAsync<List<Ray>>($"/api/Ray/user/{CurrentUser.Name}");
         }
 
     }
