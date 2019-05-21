@@ -104,6 +104,11 @@ namespace Beam.Client.Services
         {
             return await http.GetJsonAsync<List<Ray>>($"/api/Ray/user/{CurrentUser.Name}");
         }
+        public async Task<List<Ray>> GetUserRays(string Name)
+        {
+            return await http.GetJsonAsync<List<Ray>>
+                ($"/api/Ray/user/{Name ?? CurrentUser.Name}");
+        }
 
     }
 }

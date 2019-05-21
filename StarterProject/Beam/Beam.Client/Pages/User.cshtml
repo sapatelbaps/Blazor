@@ -1,4 +1,4 @@
-﻿@page "/User"
+﻿@page "/User/{name}"
 
 @using Beam.Shared
 @using System.Collections.Generic;
@@ -17,12 +17,15 @@
 
 @functions
 {
+    [Parameter]
+    string Name { get; set; }
 
     List<Ray> Rays = new List<Ray>();
 
     protected override async Task OnInitAsync()
     {
-        Rays = await data.GetMyRays();
+        // Rays = await data.GetMyRays();
+        Rays = await data.GetUserRays(Name);
     }
 
 }
