@@ -8,6 +8,7 @@ namespace Beam.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<BeamApiService>();
             services.AddSingleton<DataService>();
         }
 

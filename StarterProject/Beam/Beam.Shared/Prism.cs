@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Beam.Shared
+﻿namespace Beam.Shared
 {
     public class Prism
     {

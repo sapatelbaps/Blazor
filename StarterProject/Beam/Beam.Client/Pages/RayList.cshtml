@@ -1,14 +1,14 @@
 ﻿@page "/frequency/{id}"
 @inject DataService data
 
-
 <p>
     <div class="card">
         <div class="card-body">
             <span class="card-title">Cast a New Ray:</span>
             <div class="input-group">
-                <input bind="newRayText" class="form-control" />
+                <input bind="@newRayText" class="form-control" />
                 <div class="input-group-append">
+                    <button onclick="@ClearText" type="button" class="btn btn-outline-secondary"><span class="oi oi-circle-x"></span></button>
                     <button onclick="@CastRay" type="button" class="btn btn-outline-secondary"><span class="oi oi-audio"></span></button>
                 </div>
             </div>
@@ -32,7 +32,16 @@
     protected override void OnParametersSet()
     {
         data.UpdatedRays += StateHasChanged;
+        data.UpdatedRays += UpdateNewRayText;
         data.SelectedFrequency = Int32.Parse(Id);
+    }
+
+    void UpdateNewRayText()
+    {
+        if (!data.Rays.Any(r => r.UserName == data.CurrentUser.Name))
+        {
+            newRayText = $"My name is , {data.CurrentUser.Name}";
+        }
     }
 
     async Task CastRay()
@@ -40,4 +49,10 @@
         await data.CreateRay(newRayText);
         newRayText = "";
     }
+
+    void ClearText()
+    {
+        newRayText = "";
+    }
+
 }
