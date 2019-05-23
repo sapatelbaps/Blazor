@@ -1,20 +1,8 @@
 ﻿@page "/frequency/{id}"
 @inject DataService data
 
-<p>
-    <div class="card">
-        <div class="card-body">
-            <span class="card-title">Cast a New Ray:</span>
-            <div class="input-group">
-                <input bind="@newRayText" class="form-control" />
-                <div class="input-group-append">
-                    <button onclick="@ClearText" type="button" class="btn btn-outline-secondary"><span class="oi oi-circle-x"></span></button>
-                    <button onclick="@CastRay" type="button" class="btn btn-outline-secondary"><span class="oi oi-audio"></span></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</p>
+<RayInput bind-newRayText="@newRayText"></RayInput>
+
 @foreach (var ray in data.Rays)
 {
     <p>
@@ -31,6 +19,9 @@
 
     protected override void OnParametersSet()
     {
+        // Always reset this placeholder to create a new Ray for the user if there is none for that particular user.
+        newRayText = string.Empty;
+
         data.UpdatedRays += StateHasChanged;
         data.UpdatedRays += UpdateNewRayText;
         data.SelectedFrequency = Int32.Parse(Id);
@@ -40,19 +31,8 @@
     {
         if (!data.Rays.Any(r => r.UserName == data.CurrentUser.Name))
         {
-            newRayText = $"My name is , {data.CurrentUser.Name}";
+            newRayText = $"Please add some Rays for , {data.CurrentUser.Name}";
         }
-    }
-
-    async Task CastRay()
-    {
-        await data.CreateRay(newRayText);
-        newRayText = "";
-    }
-
-    void ClearText()
-    {
-        newRayText = "";
     }
 
 }
